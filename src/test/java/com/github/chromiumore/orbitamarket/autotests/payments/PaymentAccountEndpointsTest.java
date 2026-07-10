@@ -3,14 +3,13 @@ package com.github.chromiumore.orbitamarket.autotests.payments;
 import com.github.chromiumore.orbitamarket.autotests.client.services.PaymentsClient;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PaymentAccountEndpointsTest {
 
     public static PaymentsClient paymentsClient;
@@ -30,10 +29,11 @@ public class PaymentAccountEndpointsTest {
     }
 
     @Test
+    @Order(1)
     void testCreateAccount() {
         Response response = paymentsClient.createAccount(TEST_USER_ID);
 
-        assertEquals(200, response.statusCode());
+        response.then().statusCode(200);
 
         JsonPath body = response.jsonPath();
 
@@ -42,10 +42,11 @@ public class PaymentAccountEndpointsTest {
     }
 
     @Test
+    @Order(2)
     void testTopUp() {
         Response response = paymentsClient.topUp(TEST_USER_ID, TEST_AMOUNT_TOP_UP);
 
-        assertEquals(200, response.statusCode());
+        response.then().statusCode(200);
 
         JsonPath responseBody = response.jsonPath();
 
@@ -55,10 +56,11 @@ public class PaymentAccountEndpointsTest {
     }
 
     @Test
+    @Order(3)
     void testGetBalance() {
         Response response = paymentsClient.getBalance(TEST_USER_ID);
 
-        assertEquals(200, response.statusCode());
+        response.then().statusCode(200);
 
         JsonPath responseBody = response.jsonPath();
 
