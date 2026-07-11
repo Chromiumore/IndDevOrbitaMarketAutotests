@@ -2,3 +2,15 @@ autotests:
   config:
     orders-url: ${ORDERS_URL:http://localhost:8080/orders}
     payments-url: ${PAYMENTS_URL:http://localhost:8080/payments}
+
+spring:
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:29093}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: paymentRequested:com.github.chromiumore.orbitamarket.autotests.dto.event.PaymentRequestedEvent
+
+  jackson:
+    property-naming-strategy: SNAKE_CASE
