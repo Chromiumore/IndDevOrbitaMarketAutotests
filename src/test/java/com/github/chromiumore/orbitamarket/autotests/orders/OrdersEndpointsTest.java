@@ -5,6 +5,8 @@ import com.github.chromiumore.orbitamarket.autotests.client.services.PaymentsCli
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,31 +15,29 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class OrdersEndpointsTest {
 
-    public static OrdersClient ordersClient;
-    private static PaymentsClient paymentsClient;
+    @Autowired
+    private OrdersClient ordersClient;
+    @Autowired
+    private PaymentsClient paymentsClient;
+
     private static UUID TEST_USER_ID;
     private static Long createdOrderId;
 
-    static Response createTestAccount(UUID userId) {
+    Response createTestAccount(UUID userId) {
         return paymentsClient.createAccount(TEST_USER_ID);
     }
 
     @BeforeAll
-    static void setUp() {
-        ordersClient = new OrdersClient();
-        paymentsClient = new PaymentsClient();
+    void setUp() {
 
         TEST_USER_ID = UUID.randomUUID();
 
         createTestAccount(TEST_USER_ID).then().statusCode(200);
-    }
-
-    @BeforeEach
-    void setUpResources() {
-
     }
 
     @Test

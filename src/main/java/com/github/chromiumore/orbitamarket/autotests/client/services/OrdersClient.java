@@ -1,40 +1,43 @@
 package com.github.chromiumore.orbitamarket.autotests.client.services;
 
 import com.github.chromiumore.orbitamarket.autotests.client.services.api.ApiClient;
-import com.github.chromiumore.orbitamarket.autotests.config.TestConfig;
 import io.restassured.response.Response;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Component
 public class OrdersClient {
 
-    private final ApiClient apiClient;
-    private final static String ORDERS_URL = TestConfig.ORDERS_URL;
+    @Autowired
+    private ApiClient apiClient;
 
-    public OrdersClient() {
-        apiClient = new ApiClient();
-    }
+    @Value("${autotests.config.orders-url}")
+    private String url;
 
     public Response createOrder(UUID userId, Map<String, Object> body) {
         Map<String, String> headers = new HashMap<>();
         headers.put("X-User-Id", userId.toString());
 
-        return apiClient.post(ORDERS_URL, body, headers);
+        return apiClient.post(url, body, headers);
     }
 
     public Response getUserOrders(UUID userId) {
         Map<String, String> headers = new HashMap<>();
         headers.put("X-User-Id", userId.toString());
 
-        return apiClient.get(ORDERS_URL, headers);
+        return apiClient.get(url, headers);
     }
 
     public Response getOrder(UUID userId, Long orderId) {
         Map<String, String> headers = new HashMap<>();
         headers.put("X-User-Id", userId.toString());
 
-        return apiClient.get(ORDERS_URL + "/" + orderId, headers);
+        return apiClient.get(url + "/" + orderId, headers);
     }
 }

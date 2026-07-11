@@ -4,28 +4,26 @@ import com.github.chromiumore.orbitamarket.autotests.client.services.PaymentsCli
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PaymentAccountEndpointsTest {
 
-    public static PaymentsClient paymentsClient;
+    @Autowired
+    public PaymentsClient paymentsClient;
+
     public static final Double TEST_AMOUNT_TOP_UP = 500.0;
     private static UUID TEST_USER_ID;
 
     @BeforeAll
     static void setUp() {
-        paymentsClient = new PaymentsClient();
-
         TEST_USER_ID = UUID.randomUUID();
-    }
-
-    @BeforeEach
-    void setUpResources() {
-
     }
 
     @Test

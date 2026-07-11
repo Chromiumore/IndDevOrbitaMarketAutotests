@@ -2,11 +2,16 @@ package com.github.chromiumore.orbitamarket.autotests.client.services.api;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
+@Component
+@RequiredArgsConstructor
 public class ApiClient {
     public Response get(
             String endpoint,

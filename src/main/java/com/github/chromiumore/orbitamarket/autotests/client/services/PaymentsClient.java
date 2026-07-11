@@ -1,26 +1,29 @@
 package com.github.chromiumore.orbitamarket.autotests.client.services;
 
 import com.github.chromiumore.orbitamarket.autotests.client.services.api.ApiClient;
-import com.github.chromiumore.orbitamarket.autotests.config.TestConfig;
 import io.restassured.response.Response;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Component
 public class PaymentsClient {
 
-    private final ApiClient apiClient;
-    private final static String PAYMENTS_URL = TestConfig.PAYMENTS_URL;
+    @Autowired
+    private ApiClient apiClient;
 
-    public PaymentsClient() {
-        apiClient = new ApiClient();
-    }
+    @Value("${autotests.config.payments-url}")
+    private String url;
 
     public Response createAccount(UUID userId) {
         Map<String, String> headers = new HashMap<>();
         headers.put("X-User-Id", userId.toString());
-        return apiClient.post(PAYMENTS_URL + "/accounts", new HashMap<>(), headers);
+        return apiClient.post(url + "/accounts", new HashMap<>(), headers);
     }
 
     public Response topUp(UUID userId, Double amount) {
@@ -29,13 +32,13 @@ public class PaymentsClient {
 
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("amount", amount);
-        return apiClient.post(PAYMENTS_URL + "/accounts/top-up", requestBody, headers);
+        return apiClient.post(url + "/accounts/top-up", requestBody, headers);
     }
 
     public Response getBalance(UUID userId) {
         Map<String, String> headers = new HashMap<>();
         headers.put("X-User-Id", userId.toString());
 
-        return apiClient.get(PAYMENTS_URL + "/accounts/balance", headers);
+        return apiClient.get(url + "/accounts/balance", headers);
     }
 }

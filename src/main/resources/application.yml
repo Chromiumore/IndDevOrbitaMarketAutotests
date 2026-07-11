@@ -1,0 +1,4 @@
+autotests:
+  config:
+    orders-url: ${ORDERS_URL:http://localhost:8080/orders}
+    payments-url: ${PAYMENTS_URL:http://localhost:8080/payments}
