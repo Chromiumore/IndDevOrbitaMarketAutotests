@@ -169,7 +169,7 @@ public class BasicScenariosTest {
     void testDuplicateCreateAccount() {
         UUID userId = UUID.randomUUID();
         Response response = paymentsClient.createAccount(userId);
-        Long orderId = response.jsonPath().getLong("id");
+        Long accountId = response.jsonPath().getLong("id");
 
         response = paymentsClient.topUp(userId, 500.0);
 
@@ -177,7 +177,7 @@ public class BasicScenariosTest {
         JsonPath responseBody = response.jsonPath();
 
         assertEquals(userId.toString(), responseBody.getString("user_id"));
-        assertEquals(orderId, responseBody.getLong("id"));
+        assertEquals(accountId, responseBody.getLong("id"));
         assertEquals(500.0, responseBody.getDouble("balance"));
     }
 }
